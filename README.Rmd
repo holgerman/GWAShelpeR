@@ -1,0 +1,30 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# GWAShelpeR
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of GWAShelpeR is to provide functions used in calculation of genetics at the genome-wide or candidate-gene level 
+
+## Installation
+
+You can install t GWAShelpeR from this repository with:
+
+``` r
+devtools::install_github("holgerman/GWAShelpeR")
+```
+
