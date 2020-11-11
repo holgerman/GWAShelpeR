@@ -8,7 +8,9 @@
 <!-- badges: end -->
 
 The goal of GWAShelpeR is to provide functions used in calculation of
-genetics at the genome-wide or candidate-gene level
+genetics at the genome-wide or candidate-gene level. Primarily designed
+for local application of [AG GenStat/IMISE Uni
+Leipzig](https://www.genstat.imise.uni-leipzig.de/)
 
 ## Installation
 
