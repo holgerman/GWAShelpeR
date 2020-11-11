@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 The goal of GWAShelpeR is to provide functions used in calculation of genetics at the genome-wide or candidate-gene level 
 
-## Installation
+## Installation 
 
 You can install t GWAShelpeR from this repository with:
 
