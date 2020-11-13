@@ -107,7 +107,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
 
   if(length(c(qlist1$q2, qlist1$q3)) >0) {
     print(str(qlist1))
-    stop("check that the same individuals with the same pedigree IDs are in files\n",paste(c(sample_fn, sampleinfo_fn), collapse = "\n"))
+    stop("check that the same individuals with the same pedigree IDs are in files\n",paste(c(psamfile_fn, sampleinfo_fn), collapse = "\n"))
   }
 
 
