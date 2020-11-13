@@ -1,13 +1,13 @@
 Package: GWAShelpeR
 Title: A package to provide functions used in calculation of genetics at the genome-wide or candidate-gene level of AG GenStat
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: 
     person(given = "Holger",
            family = "Kirsten",
            role = c("aut", "cre"),
            email = "holger.kirsten@imise.uni-leipzig.de",
            comment = c(ORCID = "0000-0002-3126-7950"))
-Description: A package to provide functions used in calculation of genetics at the genome-wide or candidate-gene level of AG GenStat. PRimarily designed for local application
+Description: A package to provide functions used in calculation of genetics at the genome-wide or candidate-gene level of AG GenStat. Primarily designed for local application.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

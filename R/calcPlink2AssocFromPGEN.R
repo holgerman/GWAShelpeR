@@ -18,7 +18,7 @@
 #' @param plinklocation_avx Location of plink executable requiring unix 64 bit architecture with avx support, Default: '/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_64/plink2'
 #' @param plinklocation_unix64 Location of plink executable requiring any unix 64 bit architecture, Default: '/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_avx2/plink2'
 #' @return Returns a data frame with standard plink association results, see also https://www.cog-genomics.org/plink/2.0/formats#glm_linear or https://www.cog-genomics.org/plink/2.0/formats#glm_logistic Additionally all plink output is saved in the location specified in `out_fn`
-#' @details Does not use rounded genotypes, but imputed gene doses. Works currently only on unix computeserver of GEnstat. Function in progress. Last modificaiton: 2020-11-11
+#' @details Does not use rounded genotypes, but imputed gene doses. Works currently only on unix computeserver of GEnstat. Function in progress. Note that the default PGEN File (`/net/ifs1/san_projekte/projekte/genstat/02_projekte/1612_lifea1_genotypisierungsrunde_3/Imputation/03_imputed_prephased/bgen1_2/combined/s302_3_PLINK_QCed_StandardRS_combined_a1_rd3_chr1to23_N7660`) includes only 7660 from LIFE-ADULT, excluding 9 Individuals that were QC ok for autosomes, but QC not ok for gonosomes
 #' @examples
 #' \dontrun{
 #' if(interactive()){
@@ -31,7 +31,7 @@
 #' @importFrom data.table fread fwrite
 #' @importFrom toolboxH formateTimediff moveColFront
 #' @importFrom stringr str_split str_locate_all str_sub str_replace_all
-
+#' @importFrom utils str
 #
 calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
                                     covariables ,
@@ -71,30 +71,30 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
   if(length(snps2extract) ==0) extract_text = "" else {
     goodsnps_fn = paste0(out_fn, ".snps2extract")
     extract_text = paste("--extract", goodsnps_fn)
-    fwrite(data.table(snp=snps2extract), goodsnps_fn, col.names = F)
+    data.table::fwrite(data.table::data.table(snp=snps2extract), goodsnps_fn, col.names = F)
   }
 
   if(keep_fn =="") keeptext = "" else keeptext = paste("--keep", keep_fn)
 
 
   sampleinfo = data.table::fread(sampleinfo_fn)
-  setnames(sampleinfo, names(sampleinfo)[1:2], c('FID', 'IID'))
+  data.table::setnames(sampleinfo, names(sampleinfo)[1:2], c('FID', 'IID'))
 
   psamfile  = data.table::fread(psamfile_fn)
-  setnames(psamfile, names(psamfile)[1:2], c('FID', 'IID'))
+  data.table::setnames(psamfile, names(psamfile)[1:2], c('FID', 'IID'))
 
-  # qlist1 = venn2(sampleinfo[,paste(get(names(sampleinfo)[1]),get(names(sampleinfo)[2]))], psamfile[,paste(get(names(psamfile)[1]),get(names(psamfile)[2]))], mylabels = c("sampleinfo IDs", 'psamfile IDs'), plotte=F)
+  # qlist1 = toolboxH::venn2(sampleinfo[,paste(get(names(sampleinfo)[1]),get(names(sampleinfo)[2]))], psamfile[,paste(get(names(psamfile)[1]),get(names(psamfile)[2]))], mylabels = c("sampleinfo IDs", 'psamfile IDs'), plotte=F)
   #
   # testthat::test_that("Same prim.&sec.IDs in sampleinfo and psam file", testthat::expect_equal(length(c(qlist1$q2, qlist1$q3)), 0))
 
-  setDF(psamfile)
-  setDF(sampleinfo)
+  data.table::setDF(psamfile)
+  data.table::setDF(sampleinfo)
 
   pheno = sampleinfo[,c('FID', 'IID', outcome)]
 
   if(keep_fn != "") {
     keep = data.table::fread(keep_fn, header = F)
-    setDF(keep)
+    data.table::setDF(keep)
     keep$id = paste(keep[,1], keep[,2])
     psamfile = psamfile[paste(psamfile[,"FID"], psamfile[,"IID"]) %in% keep$id,]
     pheno = pheno[paste(pheno[,"FID"], pheno[,"IID"]) %in% keep$id,]
@@ -103,7 +103,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
   }
 
 
-  qlist1= venn2(paste(psamfile[,"FID"], psamfile[,"IID"]), paste(pheno[,"FID"], pheno[,"IID"]) , plotte = F)
+  qlist1= toolboxH::venn2(paste(psamfile[,"FID"], psamfile[,"IID"]), paste(pheno[,"FID"], pheno[,"IID"]) , plotte = F)
 
   if(length(c(qlist1$q2, qlist1$q3)) >0) {
     print(str(qlist1))
@@ -120,7 +120,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
     covartext = paste("--covar", covar_fn)
     covar = sampleinfo[, c("FID", "IID", covariables)]
 
-    write.delim(covar, covar_fn)
+    toolboxH::write.delim(covar, covar_fn)
   }
 
   message("using outcomes\n", paste(outcome, collapse = "\n"))
@@ -128,7 +128,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
   pheno_fn = paste0(out_fn, ".phenos")
   phenotext = paste("--pheno", pheno_fn)
   pheno = sampleinfo[, c(1,2, which(names(sampleinfo) %in% outcome))]
-  write.delim(pheno, pheno_fn)
+  toolboxH::write.delim(pheno, pheno_fn)
 
 
 
@@ -150,7 +150,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
 
   message("---------------------------------\nTotal time for calculating genedose-associations :\n", toolboxH::formateTimediff(Sys.time()-time1))
 
-  outpattern = stringr::str_split(out_fn,"/") %>% unlist %>% last
+  outpattern = stringr::str_split(out_fn,"/") %>% unlist %>% data.table::last
 
   allresi = lapply(outcome, function(myoutcome) {
     # myoutcome = outcome[1]
@@ -186,13 +186,13 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
     resi$pheno = myoutcome
     resi = toolboxH::moveColFront(resi, "pheno")
     resi
-  }) %>% rbindlist(., use.names = T)
+  }) %>% data.table::rbindlist(., use.names = T)
 
 
   allresi
 
   ## checke ob alle guten snps da sind
-  snps2extract_dt = data.table(snps = snps2extract)
+  snps2extract_dt = data.table::data.table(snps = snps2extract)
   allresi2 = merge(allresi, snps2extract_dt, by.x  = "ID", by.y = "snps", all = T, sort = F)
 
 
