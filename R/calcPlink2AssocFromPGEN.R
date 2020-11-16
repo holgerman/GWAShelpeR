@@ -155,7 +155,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
   allresi = lapply(outcome, function(myoutcome) {
     # myoutcome = outcome[1]
     message("collecting results from ", myoutcome)
-    myoutpattern = paste0(outpattern, ".", myoutcome)
+    myoutpattern = paste0(outpattern, ".", myoutcome, ".glm")
     message("Using grep-pattern to identify plink resultfile:\n",myoutpattern) # myoutpattern = 's302_1_candidatelookup'
 
     position_slash = stringr::str_locate_all(out_fn, "/")
