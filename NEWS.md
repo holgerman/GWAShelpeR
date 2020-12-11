@@ -11,7 +11,8 @@
 # GWAShelpeR 0.0.0.9003
 
 * Fix grep pattern `calcPlink2AssocFromPGEN()`
-
-# GWAShelpeR 0.0.0.90034
-
 * Fix robustness `calcPlink2AssocFromPGEN()`, incl. new default parameter `allow-no-covars` set
+
+# GWAShelpeR 0.0.0.9004
+
+* New parameter for `calcPlink2AssocFromPGEN()`:  `writeCombinedPhenofile` and `returnCombinedPhenofile`
