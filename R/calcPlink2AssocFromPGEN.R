@@ -17,6 +17,9 @@
 #' @param gz compress result files to gz, Default: T
 #' @param plinklocation_avx Location of plink executable requiring unix 64 bit architecture with avx support, Default: '/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_64/plink2'
 #' @param plinklocation_unix64 Location of plink executable requiring any unix 64 bit architecture, Default: '/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_avx2/plink2'
+#'
+#' @param writeCombinedPhenofile Create a written Textfile including association results from all Phenotypes, Default: TRUE
+#' @param returnCombinedPhenofile Return a data.table with the combined association results from all Phenotypes, Default: TRUE
 #' @return Returns a data frame with standard plink association results, see also https://www.cog-genomics.org/plink/2.0/formats#glm_linear or https://www.cog-genomics.org/plink/2.0/formats#glm_logistic Additionally all plink output is saved in the location specified in `out_fn`
 #' @details Does not use rounded genotypes, but imputed gene doses. Works currently only on unix computeserver of GEnstat. Function in progress. Note that the default PGEN File (`/net/ifs1/san_projekte/projekte/genstat/02_projekte/1612_lifea1_genotypisierungsrunde_3/Imputation/03_imputed_prephased/bgen1_2/combined/s302_3_PLINK_QCed_StandardRS_combined_a1_rd3_chr1to23_N7660`) includes only 7660 from LIFE-ADULT, excluding 9 Individuals that were QC ok for autosomes, but QC not ok for gonosomes
 #' @examples
@@ -49,7 +52,9 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
                                     morePlinkParameter = " --threads 2 --memory 6000",
                                     gz = T,
                                     plinklocation_avx = "/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_64/plink2",
-                                    plinklocation_unix64 = "/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_avx2/plink2"
+                                    plinklocation_unix64 = "/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_avx2/plink2",
+                                    writeCombinedPhenofile = T,
+                                    returnCombinedPhenofile = T
 ) {
 
   time1 = Sys.time()
@@ -199,9 +204,9 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
 
   out_fn_results = paste0(out_fn, '_ALLPHENOS.txt')
   message("\n---------------------\nSaving all results in one file here:\n", out_fn_results)
-  data.table::fwrite(allresi2, out_fn_results, sep = "\t")
+  if(writeCombinedPhenofile==T) data.table::fwrite(allresi2, out_fn_results, sep = "\t")
 
-  allresi2
+
 
   if(gz ==T)      {
     message("GZ ing all result file...")
@@ -209,6 +214,6 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
 
   }
 
-  allresi2
+  if(returnCombinedPhenofile ==T ) return(allresi2) else return(NULL)
 }
 

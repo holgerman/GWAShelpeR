@@ -24,7 +24,9 @@ calcPlink2AssocFromPGEN(
  
     plinklocation_avx = "/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_64/plink2",
  
-    plinklocation_unix64 = "/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_avx2/plink2"
+    plinklocation_unix64 = "/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_avx2/plink2",
+  writeCombinedPhenofile = T,
+  returnCombinedPhenofile = T
 )
 }
 \arguments{
@@ -61,6 +63,10 @@ calcPlink2AssocFromPGEN(
 \item{plinklocation_avx}{Location of plink executable requiring unix 64 bit architecture with avx support, Default: '/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_64/plink2'}
 
 \item{plinklocation_unix64}{Location of plink executable requiring any unix 64 bit architecture, Default: '/net/ifs1/san_projekte/projekte/genstat/07_programme/plink2.0/20201105/unix_avx2/plink2'}
+
+\item{writeCombinedPhenofile}{Create a written Textfile including association results from all Phenotypes, Default: TRUE}
+
+\item{returnCombinedPhenofile}{Return a data.table with the combined association results from all Phenotypes, Default: TRUE}
 }
 \value{
 Returns a data frame with standard plink association results, see also https://www.cog-genomics.org/plink/2.0/formats#glm_linear or https://www.cog-genomics.org/plink/2.0/formats#glm_logistic Additionally all plink output is saved in the location specified in \code{out_fn}
