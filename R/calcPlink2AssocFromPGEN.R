@@ -72,7 +72,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
     goodsnps_fn = paste0(out_fn, ".snps2extract")
     extract_text = paste("--extract", goodsnps_fn)
     data.table::fwrite(data.table::data.table(snp=snps2extract), goodsnps_fn, col.names = F)
-  }
+  } else extract_text  = ""
 
   if(keep_fn =="") keeptext = "" else keeptext = paste("--keep", keep_fn)
 
