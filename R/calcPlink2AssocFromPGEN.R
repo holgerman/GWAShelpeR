@@ -68,7 +68,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
 
   if(code_chrX %in% c( "m:0_2_f:0_1_2")) code_chrX_text = "--xchr-model 2"  else  if(code_chrX == "m:0_1_f:0_1_2") code_chrX_text = "--xchr-model 1" else stop('Analysismode plink accepts only values  "m:0_2_f:0_1_2", and "m:0_1_f:0_1_2" for paramter "code_chrX"')
 
-  if(length(snps2extract) ==0) extract_text = "" else {
+  if(snps2extract =="") extract_text = "" else {
     goodsnps_fn = paste0(out_fn, ".snps2extract")
     extract_text = paste("--extract", goodsnps_fn)
     data.table::fwrite(data.table::data.table(snp=snps2extract), goodsnps_fn, col.names = F)
@@ -192,7 +192,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
   allresi
 
   ## checke ob alle guten snps da sind
-  if(length(snps2extract) !=0) {
+  if( snps2extract !="") {
     snps2extract_dt = data.table::data.table(snps = snps2extract)
   allresi2 = merge(allresi, snps2extract_dt, by.x  = "ID", by.y = "snps", all = T, sort = F)
 } else allresi2 = allresi
