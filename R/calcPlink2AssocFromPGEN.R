@@ -139,7 +139,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
   if(showCovarStats) showCovarStats_text = "" else showCovarStats_text = "hide-covar"
 
   #call2----
-  call2 = paste(callplink, '--pfile',psamfile_fn = pfiles, "--glm ",sextext," ", showCovarStats_text,"cols=chrom,pos,ref,alt,firth,test,nobs,machr2,a1freq,a1freqcc,a1countcc,orbeta,se,ci,tz,p",use_firth_fallback_text,code_chrX_text, " --ci 0.95 --pheno",pheno_fn,covartext,keeptext,extract_text, morePlinkParameter,"--vif ",max_vif," --covar-variance-standardize --out", out_fn)
+  call2 = paste(callplink, '--pfile',psamfile_fn = pfiles, " --glm allow-no-covars ",sextext," ", showCovarStats_text,"cols=chrom,pos,ref,alt,firth,test,nobs,machr2,a1freq,a1freqcc,a1countcc,orbeta,se,ci,tz,p",use_firth_fallback_text,code_chrX_text, " --ci 0.95 --pheno",pheno_fn,covartext,keeptext,extract_text, morePlinkParameter,"--vif ",max_vif," --covar-variance-standardize --out", out_fn)
 
 
   message("-----------\nRunnning Plink command:\n",call2)
@@ -150,7 +150,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
 
   message("---------------------------------\nTotal time for calculating genedose-associations :\n", toolboxH::formateTimediff(Sys.time()-time1))
 
-  outpattern = stringr::str_split(out_fn,"/") %>% unlist %>% data.table::last
+  outpattern = stringr::str_split(out_fn,"/") %>% unlist() %>% data.table::last()
 
   allresi = lapply(outcome, function(myoutcome) {
     # myoutcome = outcome[1]
@@ -167,7 +167,7 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
     message("Checking guessed name of  PLINK outfile,:\n",my_resultfile)
 
     if(length(my_resultfile)==2) {
-      my_resultfile = stringr::str_replace_all(my_resultfile, "\\.gz", "") %>% unique
+      my_resultfile = stringr::str_replace_all(my_resultfile, "\\.gz", "") %>% unique()
 
     }
     if(file.exists(my_resultfile)==F) {

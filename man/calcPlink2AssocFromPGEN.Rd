@@ -69,7 +69,7 @@ Returns a data frame with standard plink association results, see also https://w
 Uses a psam file and plink 2.0 to quickly calculate associations for quantitative and binary outcome variable controlling for covariates for autosomes and the X-chromosome
 }
 \details{
-Does not use rounded genotypes, but imputed gene doses. Works currently only on unix computeserver of GEnstat. Function in progress. Last modificaiton: 2020-11-11
+Does not use rounded genotypes, but imputed gene doses. Works currently only on unix computeserver of GEnstat. Function in progress. Note that the default PGEN File (\verb{/net/ifs1/san_projekte/projekte/genstat/02_projekte/1612_lifea1_genotypisierungsrunde_3/Imputation/03_imputed_prephased/bgen1_2/combined/s302_3_PLINK_QCed_StandardRS_combined_a1_rd3_chr1to23_N7660}) includes only 7660 from LIFE-ADULT, excluding 9 Individuals that were QC ok for autosomes, but QC not ok for gonosomes
 }
 \examples{
 \dontrun{
