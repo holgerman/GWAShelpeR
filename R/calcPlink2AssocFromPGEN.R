@@ -192,9 +192,10 @@ calcPlink2AssocFromPGEN <- function(sampleinfo_fn,
   allresi
 
   ## checke ob alle guten snps da sind
-  snps2extract_dt = data.table::data.table(snps = snps2extract)
+  if(length(snps2extract) !=0) {
+    snps2extract_dt = data.table::data.table(snps = snps2extract)
   allresi2 = merge(allresi, snps2extract_dt, by.x  = "ID", by.y = "snps", all = T, sort = F)
-
+} else allresi2 = allresi
 
   out_fn_results = paste0(out_fn, '_ALLPHENOS.txt')
   message("\n---------------------\nSaving all results in one file here:\n", out_fn_results)
